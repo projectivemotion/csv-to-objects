@@ -6,14 +6,7 @@
  */
 
 // copied this from doctrine's bin/doctrine.php
-$autoload_files = array( __DIR__ . '/../vendor/autoload.php',
-    __DIR__ . '/../../../autoload.php');
-
-foreach($autoload_files as $autoload_file)
-{
-    if(!file_exists($autoload_file)) continue;
-    require_once $autoload_file;
-}
+require_once __DIR__ . '/../src/Csv.php';
 // end autoloader finder
 
 assert_options(ASSERT_BAIL, 0);
@@ -39,6 +32,7 @@ $CsvObjects  =   $Csv->AsObjects();
 
 assert($CsvObjects[0]->HeaderOne === '1');
 assert($CsvObjects[1]->HeaderOne === '4');
+assert($CsvObjects[1]->{'Header Two'} === '5');
 
 foreach($Csv->generateObjects() as $obj)
 {
