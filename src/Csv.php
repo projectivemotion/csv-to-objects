@@ -98,4 +98,12 @@ class Csv
 
         return $data;
     }
+
+    public static function StringToObjects($datastring)
+    {
+        $Csv    =   new Csv();
+        $Csv->setString($datastring);
+
+        return $Csv->AsObjects();
+    }
 }

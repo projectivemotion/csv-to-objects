@@ -40,3 +40,14 @@ foreach($Csv->generateObjects() as $obj)
     assert(isset($obj->{'Header Two'}));
     assert(isset($obj->Header_Three));
 }
+
+$users  =   \projectivemotion\Csv\Csv::StringToObjects(<<<ND
+Username,Password
+amado,abc123
+ND
+);
+
+assert($users[0]->Username  ==  'amado');
+assert($users[0]->Password  ==  'abc123');
+
+echo "Passed all Tests.";

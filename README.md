@@ -4,20 +4,14 @@ Quickly Convert a Csv String to an array of Std Objects in PHP
 [![Build Status](https://travis-ci.org/projectivemotion/csv-to-objects.svg?branch=master)](https://travis-ci.org/projectivemotion/csv-to-objects)
 
 ## Usage
-    $data   =   <<<NOWDOC
-    HeaderOne,Header Two,Header_Three
-    1,2,3
-    4,5,6
-    NOWDOC;
+    $users  =   \projectivemotion\Csv\Csv::StringToObjects(<<<ND
+    Username,Password
+    amado,abc123
+    ND
+    );
     
-    $Csv    =   new \projectivemotion\Csv\Csv();
-    $Csv->setString($data);
-    
-    $CsvObjects  =   $Csv->AsObjects();
-    
-    assert($CsvObjects[0]->HeaderOne === '1');
-    assert($CsvObjects[1]->HeaderOne === '4');
-    assert($CsvObjects[1]->{'Header Two'} === '5');
+    assert($users[0]->Username  ==  'amado');
+    assert($users[0]->Password  ==  'abc123');
     
 ## Installation
 
