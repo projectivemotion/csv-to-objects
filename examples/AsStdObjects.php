@@ -5,9 +5,7 @@
  * @author Amado Martinez <amado@projectivemotion.com>
  */
 
-// copied this from doctrine's bin/doctrine.php
 require_once __DIR__ . '/../src/Csv.php';
-// end autoloader finder
 
 assert_options(ASSERT_BAIL, 0);
 assert_options(ASSERT_WARNING, 0);
@@ -63,7 +61,7 @@ ID\tCategory
 2\tPackages
 3\tConcepts
 Cats
-    ,
+    , [],
     ["\n", "\t"]
 );
 

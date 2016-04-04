@@ -92,7 +92,7 @@ class Csv
     public function generateAssocArrays()
     {
         $this->reset();
-        
+
         $headers    =   $this->getHeaders();
         foreach($this->generateRows() as $line)
         {
@@ -128,11 +128,14 @@ class Csv
         return $data;
     }
 
-    public static function StringToObjects($datastring, $separators = ["\n", ","])
+    public static function StringToObjects($datastring, $object_args = [], $separators = ["\n", ","])
     {
         $Csv    =   new Csv($separators[0], $separators[1]);
         $Csv->setString($datastring);
 
+        if($object_args)
+            return call_user_func_array([$Csv, 'AsObjects'], $object_args);
+        
         return $Csv->AsObjects();
     }
 }
