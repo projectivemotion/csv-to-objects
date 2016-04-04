@@ -50,4 +50,16 @@ ND
 assert($users[0]->Username  ==  'amado');
 assert($users[0]->Password  ==  'abc123');
 
+$categories =   \projectivemotion\Csv\Csv::StringToObjects(<<<Cats
+ID\tCategory
+1\tLanguages
+2\tPackages
+3\tConcepts
+Cats
+    ,
+    ["\n", "\t"]
+);
+
+assert($categories[1]->Category == 'Packages');
+
 echo "Passed all Tests.";

@@ -16,9 +16,20 @@ class Csv
     protected $columnSeparator    =   ",";
     protected $headers  =   [];
 
-    public function __construct()
+    public function __construct($lineSeparator = "\t", $columnSeparator = ",")
     {
+        $this->setLineSeparator($lineSeparator);
+        $this->setColumnSeparator($columnSeparator);
+    }
 
+    public function setLineSeparator($lineSeparator)
+    {
+        $this->lineSeparator = $lineSeparator;
+    }
+
+    public function setColumnSeparator($columnSeparator)
+    {
+        $this->columnSeparator = $columnSeparator;
     }
 
     public function getLineSeparator()
@@ -99,9 +110,9 @@ class Csv
         return $data;
     }
 
-    public static function StringToObjects($datastring)
+    public static function StringToObjects($datastring, $separators = ["\n", ","])
     {
-        $Csv    =   new Csv();
+        $Csv    =   new Csv($separators[0], $separators[1]);
         $Csv->setString($datastring);
 
         return $Csv->AsObjects();
