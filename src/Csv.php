@@ -16,9 +16,20 @@ class Csv
     protected $columnSeparator    =   ",";
     protected $headers  =   [];
 
-    public function __construct()
+    public function __construct($lineSeparator = "\t", $columnSeparator = ",")
     {
+        $this->setLineSeparator($lineSeparator);
+        $this->setColumnSeparator($columnSeparator);
+    }
 
+    public function setLineSeparator($lineSeparator)
+    {
+        $this->lineSeparator = $lineSeparator;
+    }
+
+    public function setColumnSeparator($columnSeparator)
+    {
+        $this->columnSeparator = $columnSeparator;
     }
 
     public function getLineSeparator()
@@ -72,8 +83,16 @@ class Csv
         return $this->headers;
     }
 
+    public function reset()
+    {
+        $this->headers  =   NULL;
+        rewind($this->fh);
+    }
+
     public function generateAssocArrays()
     {
+        $this->reset();
+
         $headers    =   $this->getHeaders();
         foreach($this->generateRows() as $line)
         {
@@ -90,20 +109,33 @@ class Csv
         }
     }
 
-    public function AsObjects()
+    public function AsObjects($class = '')
     {
         $data   =   [];
+        $args   = func_get_args();
+
         foreach($this->generateAssocArrays() as $obj)
-            $data[] =   (object)$obj;
+        {
+            if($class)
+            {
+                $RC =   new \ReflectionClass($class);
+                $args[0]    =   $obj;
+                $data[] =   $RC->newInstanceArgs($args);
+            }else
+                $data[] =   (object)$obj;
+        }
 
         return $data;
     }
 
-    public static function StringToObjects($datastring)
+    public static function StringToObjects($datastring, $object_args = [], $separators = ["\n", ","])
     {
-        $Csv    =   new Csv();
+        $Csv    =   new Csv($separators[0], $separators[1]);
         $Csv->setString($datastring);
 
+        if($object_args)
+            return call_user_func_array([$Csv, 'AsObjects'], $object_args);
+        
         return $Csv->AsObjects();
     }
 }
