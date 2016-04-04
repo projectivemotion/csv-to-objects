@@ -83,8 +83,16 @@ class Csv
         return $this->headers;
     }
 
+    public function reset()
+    {
+        $this->headers  =   NULL;
+        rewind($this->fh);
+    }
+
     public function generateAssocArrays()
     {
+        $this->reset();
+        
         $headers    =   $this->getHeaders();
         foreach($this->generateRows() as $line)
         {
@@ -101,11 +109,21 @@ class Csv
         }
     }
 
-    public function AsObjects()
+    public function AsObjects($class = '')
     {
         $data   =   [];
+        $args   = func_get_args();
+
         foreach($this->generateAssocArrays() as $obj)
-            $data[] =   (object)$obj;
+        {
+            if($class)
+            {
+                $RC =   new \ReflectionClass($class);
+                $args[0]    =   $obj;
+                $data[] =   $RC->newInstanceArgs($args);
+            }else
+                $data[] =   (object)$obj;
+        }
 
         return $data;
     }
